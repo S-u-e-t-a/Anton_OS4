@@ -5,19 +5,6 @@ import java.util.Arrays;
 
 public class Main {
 
-    private static ArrayList<Integer> amountfResources = new ArrayList<> (Arrays.asList(4, 4, 4, 4));  //предоставлено процессу А
-    private static ArrayList<String> nameOfProcess = new ArrayList<> (Arrays.asList ("A", "B", "C", "D" ));
-
-    private static ArrayList<Integer> AprocessProvided = new ArrayList<> (Arrays.asList (2, 0, 0, 0));  //предоставлено процессу А
-    private static ArrayList<Integer> BprocessProvided = new ArrayList<> (Arrays.asList (2, 2, 0, 0 ));  //предоставлено процессу B
-    private static ArrayList<Integer> CprocessProvided = new ArrayList<> (Arrays.asList (0, 2, 2, 0 ));  //предоставлено процессу C
-    private static ArrayList<Integer> DprocessProvided = new ArrayList<> (Arrays.asList (0, 0, 2, 2 ));  //предоставлено процессу D
-
-    private static ArrayList<Integer> AprocessRequire = new ArrayList<> (Arrays.asList (2, 0, 2, 2) );  //предоставлено процессу А
-    private static ArrayList<Integer> BprocessRequire = new ArrayList<> (Arrays.asList (2, 2, 2, 2 ));  //предоставлено процессу B
-    private static ArrayList<Integer> CprocessRrequire = new ArrayList<> (Arrays.asList (2, 4, 2, 4 ));  //предоставлено процессу C
-    private static ArrayList<Integer> DprocessRrequire = new ArrayList<> (Arrays.asList (0, 0, 2, 4 ));  //предоставлено процессу D
-
     public static void showArrays(ArrayList<Integer> list){
         for(int i = 0; i< list.size(); i++)
         {
@@ -26,33 +13,86 @@ public class Main {
         System.out.print("  ");
     }
 
+    public static ArrayList<Integer> SearchFreeRes(Resources res){
+        System.out.println("Оставшиеся свободные ресурсы: ");
+        System.out.print("   ");
+        for (int i = 0; i < 4; i++){
+            res.availResources.add(res.amountofResources.get(i) - (res.AprocessProvided.get(i) + res.BprocessProvided.get(i) + res.CprocessProvided.get(i) + res.DprocessProvided.get(i)));
+            System.out.print(res.availResources.get(i) + "  ");
+        }
+        System.out.println();
+        return res.availResources;
+    }
+
+    public static boolean CheckLaunchProc(Resources res, ArrayList<Integer> processProvided, ArrayList<Integer> processRequire){
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+
+        for(int i = 0; i < processRequire.size(); i++){
+            temp.add(processProvided.get(i) + res.availResources.get(i));
+        }
+        for(int i = 0; i < temp.size(); i++){
+            if(temp.get(i) < processRequire.get(i)){
+                return false;
+            }
+        }
+        res.availResources.clear();
+        for (var i: temp) {
+            res.availResources.add(i);
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
-        ArrayList<Integer> availResources = new  ArrayList<>(amountfResources.size());
+        Resources res = new Resources();
+
         System.out.println("В системе имеются 4 одинаковых ресурсов R1, 4 одинаковых ресурсов R2, 4 одинаковых ресурсов R3 и 4 одинаковых ресурсов R4.");
-        System.out.println("   Предоставлено Максимальная");
-        System.out.println("   ресурсов      потребность");
+        System.out.println("   Предоставлено Максимальное");
+        System.out.println("   ресурсов      потребление");
         System.out.println("   R1 R2 R3 R4   R1 R2 R3 R4");
 
         System.out.print("A  ");
-        showArrays(AprocessProvided);
-        showArrays(AprocessRequire);
+        showArrays(res.AprocessProvided);
+        showArrays(res.AprocessRequire);
         System.out.println();
 
         System.out.print("B  ");
-        showArrays(BprocessProvided);
-        showArrays(BprocessRequire);
+        showArrays(res.BprocessProvided);
+        showArrays(res.BprocessRequire);
         System.out.println();
 
         System.out.print("C  ");
-        showArrays(CprocessProvided);
-        showArrays(CprocessRrequire);
+        showArrays(res.CprocessProvided);
+        showArrays(res.CprocessRrequire);
         System.out.println();
 
         System.out.print("D  ");
-        showArrays(DprocessProvided);
-        showArrays(DprocessRrequire);
+        showArrays(res.DprocessProvided);
+        showArrays(res.DprocessRrequire);
         System.out.println();
 
-        // тут как бы нужно сделать основной алгоритм
+        res.availResources = SearchFreeRes(res);
+
+        ArrayList<ArrayList<Integer>> processProvided = new ArrayList<ArrayList<Integer>>();
+        processProvided.add(res.AprocessProvided); processProvided.add(res.BprocessProvided); processProvided.add(res.CprocessProvided); processProvided.add(res.DprocessProvided);
+
+        ArrayList<ArrayList<Integer>> processRequire = new ArrayList<ArrayList<Integer>>();
+        processRequire.add(res.AprocessRequire); processRequire.add(res.BprocessRequire); processRequire.add(res.CprocessRrequire); processRequire.add(res.DprocessRrequire);
+
+        for(int i = 0; i < processProvided.size(); i++){
+            if(CheckLaunchProc(res, processProvided.get(i), processRequire.get(i))){
+                System.out.println(res.nameOfProcess.get(i) + " процесс завершен");
+                System.out.print("Свободные ресурсы на данный момент ");
+                for(int j = 0; j < res.availResources.size(); j++)
+                {
+                    System.out.print(res.availResources.get(j) + " ");
+                }
+                System.out.println();
+
+                processProvided.remove(i);
+                res.nameOfProcess.remove(i);
+                i = -1;
+            }
+        }
+
     }
 }
