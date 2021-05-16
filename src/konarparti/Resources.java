@@ -18,6 +18,4 @@ public class Resources {
     public ArrayList<Integer> DprocessRrequire = new ArrayList<> (Arrays.asList (0, 0, 2, 4 ));  //предоставлено процессу D
 
     public ArrayList<Integer> availResources = new  ArrayList<>(amountofResources.size()); // доступные ресурсы
-
-
 }

@@ -46,8 +46,7 @@ public class Main {
         Resources res = new Resources();
 
         System.out.println("В системе имеются 4 одинаковых ресурсов R1, 4 одинаковых ресурсов R2, 4 одинаковых ресурсов R3 и 4 одинаковых ресурсов R4.");
-        System.out.println("   Предоставлено Максимальное");
-        System.out.println("   ресурсов      потребление");
+        System.out.println("   Предоставлено Максимум");
         System.out.println("   R1 R2 R3 R4   R1 R2 R3 R4");
 
         System.out.print("A  ");
@@ -87,11 +86,17 @@ public class Main {
                     System.out.print(res.availResources.get(j) + " ");
                 }
                 System.out.println();
-
+                processRequire.remove(i);
                 processProvided.remove(i);
                 res.nameOfProcess.remove(i);
                 i = -1;
             }
+        }
+        if(res.nameOfProcess.isEmpty()){
+            System.out.println("Состояние безопасно");
+        }
+        else{
+            System.out.println("Состояние не является безопасным");
         }
 
     }
