@@ -1,7 +1,6 @@
 package konarparti;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
 
@@ -45,9 +44,9 @@ public class Main {
     public static void main(String[] args) {
         Resources res = new Resources();
 
-        System.out.println("В системе имеются 4 одинаковых ресурсов R1, " +
-                "4 одинаковых ресурсов R2, " +
-                "4 одинаковых ресурсов R3 и 4 одинаковых ресурсов R4.");
+        System.out.println("Ресурсы 4 R1, " +
+                "4 R2, " +
+                "4 R3 и 4 R4.");
         System.out.println("   Предоставлено Максимум");
         System.out.println("   R1 R2 R3 R4   R1 R2 R3 R4");
 
@@ -81,8 +80,8 @@ public class Main {
 
         for(int i = 0; i < processProvided.size(); i++){
             if(CheckLaunchProc(res, processProvided.get(i), processRequire.get(i))){
-                System.out.println(res.nameOfProcess.get(i) + " процесс завершен");
-                System.out.print("Свободные ресурсы на данный момент ");
+                System.out.println(res.nameOfProcess.get(i) + " процесс выполнен");
+                System.out.print("Свободные ресурсы после завершения ");
                 for(int j = 0; j < res.availResources.size(); j++)
                 {
                     System.out.print(res.availResources.get(j) + " ");
@@ -95,10 +94,10 @@ public class Main {
             }
         }
         if(res.nameOfProcess.isEmpty()){
-            System.out.println("Состояние является безопасным");
+            System.out.println("Состояние является надёжным");
         }
         else{
-            System.out.println("Состояние не является безопасным");
+            System.out.println("Состояние не является надёжным");
         }
 
     }
